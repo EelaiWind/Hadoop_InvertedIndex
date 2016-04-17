@@ -6,7 +6,9 @@
 
 HOME=/user/s101062105/invertedIndex/
 INPUT=${HOME}input
-OUTPUT=${HOME}output
+OUTPUT=${HOME}output/
 
 hdfs dfs -rm -r $OUTPUT
 hadoop jar InvertedIndex.jar invertedIndex.InvertedIndex $INPUT $OUTPUT
+hadoop fs -cat ${OUTPUT}* > output.log
+
