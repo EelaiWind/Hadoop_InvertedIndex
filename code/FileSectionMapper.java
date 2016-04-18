@@ -11,7 +11,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.lib.input.FileSplit;
 
-public class InvertedIndexMapper extends Mapper<LongWritable, Text, WordFileIdPositionPair, FileSection> {
+public class FileSectionMapper extends Mapper<LongWritable, Text, WordFileIdPositionPair, FileSection> {
 	private FileNameAndIdConvertor convertor;
 	private WordFileIdPositionPair outputKey = new WordFileIdPositionPair();
 	private FileSection outputValue = new FileSection();
@@ -23,6 +23,7 @@ public class InvertedIndexMapper extends Mapper<LongWritable, Text, WordFileIdPo
 		wordPattern = Pattern.compile("[a-zA-Z]+");
 	}
 
+	@Override
 	public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
 		Matcher matcher = wordPattern.matcher(value.toString());
 		String fileName = ((FileSplit) context.getInputSplit()).getPath().getName();

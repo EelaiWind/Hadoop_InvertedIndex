@@ -6,9 +6,12 @@
 
 HOME=/user/s101062105/invertedIndex/
 INPUT=${HOME}input
-OUTPUT=${HOME}output/
+TMP_OUTPUT=${HOME}tmp_output
+OUTPUT=${HOME}output
 
+hdfs dfs -rm -r $TMP_OUTPUT
+hadoop jar InvertedIndex.jar invertedIndex.FileSectionJob $INPUT $TMP_OUTPUT
 hdfs dfs -rm -r $OUTPUT
-hadoop jar InvertedIndex.jar invertedIndex.InvertedIndex $INPUT $OUTPUT
-hadoop fs -cat ${OUTPUT}* > output.log
+hadoop jar InvertedIndex.jar invertedIndex.CollectFileSectionJob $TMP_OUTPUT $OUTPUT
+hadoop fs -cat ${OUTPUT}/* > output.log
 

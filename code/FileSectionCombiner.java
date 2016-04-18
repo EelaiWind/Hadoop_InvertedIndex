@@ -9,7 +9,7 @@ import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.conf.Configuration;
 
 
-public class InvertedIndexCombiner extends Reducer<WordFileIdPositionPair,FileSection,WordFileIdPositionPair,FileSection> {
+public class FileSectionCombiner extends Reducer<WordFileIdPositionPair,FileSection,WordFileIdPositionPair,FileSection> {
 	private WordFileIdPositionPair outputKey = new WordFileIdPositionPair();
 	private FileSection outputValue = new FileSection();
 
