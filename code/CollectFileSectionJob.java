@@ -21,14 +21,13 @@ public class CollectFileSectionJob {
 		// set the class of each stage in mapreduce
 		job.setMapperClass(CollectFileSectionMapper.class);
 		job.setReducerClass(CollectFileSectionReducer.class);
-		//job.setCombinerClass(InvertedIndexCombiner.class);
 
 		job.setGroupingComparatorClass(WordFileIdGroupComparator.class);
 		//job.setPartitionerClass(WordFilePartitioner.class);
 
 		// set the output class of Mapper and Reducer
 		job.setMapOutputKeyClass(WordFileIdPair.class);
-		job.setMapOutputValueClass(FileSectionCollection.class);
+		job.setMapOutputValueClass(Text.class);
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(Text.class);
 

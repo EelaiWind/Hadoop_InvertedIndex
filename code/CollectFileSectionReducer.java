@@ -10,28 +10,22 @@ import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.conf.Configuration;
 
 
-public class CollectFileSectionReducer extends Reducer<WordFileIdPair,FileSectionCollection,Text,Text> {
+public class CollectFileSectionReducer extends Reducer<WordFileIdPair,Text,Text,Text> {
 	private Text outputKey = new Text();
 	private Text outputValue = new Text();
 
-	public void reduce(WordFileIdPair key, Iterable<FileSectionCollection> values, Context context) throws IOException, InterruptedException {
+	public void reduce(WordFileIdPair key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
 		String result = "";
-		int count = 0;
+		int documentFrequency = 0;
 		boolean isFirst = true;
 
-		for (FileSectionCollection value : values){
-			count += value.getDocumentFrequency();
-			if ( isFirst ){
-				isFirst = false;
-				result = value.getFileSections();
-			}
-			else{
-				result += " " + value.getFileSections();
-			}
-
+		for (Text value : values){
+			documentFrequency += 1;
+			result += " " + value.toString();
 		}
+
 		outputKey.set(key.getWord());
-		outputValue.set(count + " " + result);
+		outputValue.set(documentFrequency + result);
 		context.write(outputKey, outputValue);
 	}
 }

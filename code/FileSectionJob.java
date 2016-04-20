@@ -1,10 +1,9 @@
 package invertedIndex;
 
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.mapreduce.Job;
-import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import java.net.URI;
@@ -24,14 +23,13 @@ public class FileSectionJob {
 		// set the class of each stage in mapreduce
 		job.setMapperClass(FileSectionMapper.class);
 		job.setReducerClass(FileSectionReducer.class);
-		job.setCombinerClass(FileSectionCombiner.class);
 
 		job.setGroupingComparatorClass(FileSectionGroupComparator.class);
 		job.setPartitionerClass(WordFilePartitioner.class);
 
 		// set the output class of Mapper and Reducer
 		job.setMapOutputKeyClass(WordFileIdPositionPair.class);
-		job.setMapOutputValueClass(FileSection.class);
+		job.setMapOutputValueClass(LongWritable.class);
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(Text.class);
 

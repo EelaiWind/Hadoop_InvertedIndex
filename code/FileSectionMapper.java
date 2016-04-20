@@ -11,10 +11,9 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.lib.input.FileSplit;
 
-public class FileSectionMapper extends Mapper<LongWritable, Text, WordFileIdPositionPair, FileSection> {
+public class FileSectionMapper extends Mapper<LongWritable, Text, WordFileIdPositionPair, LongWritable> {
 	private FileNameAndIdConvertor convertor;
 	private WordFileIdPositionPair outputKey = new WordFileIdPositionPair();
-	private FileSection outputValue = new FileSection();
 	private Pattern wordPattern;
 
 	@Override
@@ -30,17 +29,11 @@ public class FileSectionMapper extends Mapper<LongWritable, Text, WordFileIdPosi
 		int fileId = convertor.getFileId(fileName);
 		int position = (int)key.get();
 
-		System.out.print("LOG " + key.get());
 		while ( matcher.find() ){
 			String word = matcher.group();
 			outputKey.set(word, fileId, position);
-			outputValue.setFileId(fileId);
-			outputValue.clearPositions();
-			outputValue.addUniquePosition(position);
-			context.write(outputKey, outputValue);
-			System.out.print(" " + word);
+			context.write(outputKey, key);
 		}
-		System.out.println();
 	}
 
 }

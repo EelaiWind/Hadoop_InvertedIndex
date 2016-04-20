@@ -4,25 +4,27 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.conf.Configuration;
 
 
-public class FileSectionReducer extends Reducer<WordFileIdPositionPair,FileSection,Text,Text> {
+public class FileSectionReducer extends Reducer<WordFileIdPositionPair,LongWritable,Text,Text> {
 	private Text outputKey = new Text();
 	private Text outputValue = new Text();
 
-	public void reduce(WordFileIdPositionPair key, Iterable<FileSection> values, Context context) throws IOException, InterruptedException {
-		FileSection fileSectionCollection = new FileSection();
+	public void reduce(WordFileIdPositionPair key, Iterable<LongWritable> values, Context context) throws IOException, InterruptedException {
+		String positionCollection = "";
 		outputKey.set(key.getWord());
-		fileSectionCollection.setFileId(key.getFileId());
-		fileSectionCollection.clearPositions();
-		for ( FileSection filesection : values ){
-			fileSectionCollection.addUniquePositions(filesection.getPositions());
+		int termFrequency = 0;
+
+		for ( LongWritable position : values ){
+			termFrequency += 1;
+			positionCollection += " " + position;
 		}
-		outputValue.set(fileSectionCollection.toString());
+		positionCollection = key.getFileId() + " " + termFrequency + positionCollection;
+		outputValue.set(positionCollection);
 		context.write(outputKey, outputValue);
 	}
 }

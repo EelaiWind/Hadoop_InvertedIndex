@@ -10,30 +10,24 @@ import java.io.DataOutput;
 public class WordFileIdPositionPair implements WritableComparable{
 	private Text word = new Text();
 	private int fileId;
-	private int position;
+	private long position;
 
 	public WordFileIdPositionPair(){
 
-	}
-
-	public WordFileIdPositionPair(String word, int fileId, int position){
-		setWord(word);
-		setFileId(fileId);
-		setPosition(position);
 	}
 
 	@Override
 	public void write(DataOutput out) throws IOException {
 		word.write(out);
 		out.writeInt(fileId);
-		out.writeInt(position);
+		out.writeLong(position);
 	}
 
 	@Override
 	public void readFields(DataInput in) throws IOException {
 		word.readFields(in);
 		fileId = in.readInt();
-		position = in.readInt();
+		position = in.readLong();
 	}
 
 	@Override
@@ -44,7 +38,7 @@ public class WordFileIdPositionPair implements WritableComparable{
 		if ( wordComparision == 0 ){
 			int fileIdComparision = Integer.compare(getFileId(), obj.getFileId());
 			if ( fileIdComparision == 0){
-				return Integer.compare(getPosition(), obj.getPosition());
+				return Long.compare(getPosition(), obj.getPosition());
 			}
 			else{
 				return fileIdComparision;
@@ -63,11 +57,11 @@ public class WordFileIdPositionPair implements WritableComparable{
 		return fileId;
 	}
 
-	public int getPosition(){
+	public long getPosition(){
 		return position;
 	}
 
-	public void set(String word, int fileId, int position){
+	public void set(String word, int fileId, long position){
 		setWord(word);
 		setFileId(fileId);
 		setPosition(position);
@@ -81,7 +75,7 @@ public class WordFileIdPositionPair implements WritableComparable{
 		this.fileId = fileId;
 	}
 
-	public void setPosition(int position){
+	public void setPosition(long position){
 		this.position = position;
 	}
 
