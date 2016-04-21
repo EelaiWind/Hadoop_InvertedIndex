@@ -14,6 +14,7 @@ import java.net.URI;
 public class FileNameAndIdConvertor{
 	private HashMap<String, Integer> fileNameToId;
 	private HashMap<Integer, String> idToFileName;
+	private int totalFileCount;
 
 	public FileNameAndIdConvertor(JobContext context) throws IOException {
 		fileNameToId = new HashMap<String, Integer>();
@@ -30,6 +31,7 @@ public class FileNameAndIdConvertor{
 		);
 
 		String line;
+		totalFileCount = 0;
 		while((line = reader.readLine() ) != null){
 			String[] parameter = line.split(" ", 2);
 			if (parameter.length < 2 ){
@@ -39,6 +41,7 @@ public class FileNameAndIdConvertor{
 			String fileName = parameter[1];
 			fileNameToId.put( fileName, id );
 			idToFileName.put( id, fileName );
+			totalFileCount += 1;
 		}
 
 		reader.close();
@@ -60,5 +63,9 @@ public class FileNameAndIdConvertor{
 		else{
 			return idToFileName.get(fileId);
 		}
+	}
+
+	public int getTotalFileCount(){
+		return totalFileCount;
 	}
 }

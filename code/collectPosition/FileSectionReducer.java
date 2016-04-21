@@ -18,10 +18,9 @@ public class FileSectionReducer extends Reducer<WordFileIdPositionPair,LongWrita
 		String positionCollection = "";
 		outputKey.set(key.getWord());
 		int termFrequency = 0;
-
 		for ( LongWritable position : values ){
 			termFrequency += 1;
-			positionCollection += " " + position;
+			positionCollection += " "+position;
 		}
 		positionCollection = key.getFileId() + " " + termFrequency + positionCollection;
 		outputValue.set(positionCollection);

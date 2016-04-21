@@ -25,7 +25,7 @@ public class FileIdRecorder{
 			new OutputStreamWriter(
 				outputFileSystem.create( new Path(InvertedIndexSetting.ID_FILE_PATH), true ) ,"UTF-8" )
 		);
-		int id = 0;
+		int id = 1;
 		for (FileStatus status : inputFileSystem.listStatus(new Path(filesDirectory))) {
 			writer.write(id+" "+ status.getPath().getName()+"\n");
 			id += 1;
