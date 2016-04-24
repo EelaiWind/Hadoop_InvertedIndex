@@ -22,10 +22,17 @@ public class RetrievalReducer extends Reducer<ScoreFileIdPair, QueryAnswer, Null
 	private double previousScore;
 	@Override
 	public void setup(org.apache.hadoop.mapreduce.Reducer.Context context) throws IOException, InterruptedException{
+		String searchingQuery = "";
 		convertor = new FileNameAndIdConvertor(context);
 		rank = 0;
 		printedCount = 0;
 		previousScore = Double.MAX_VALUE;
+		searchingQuery = "Searching Query : " + context.getConfiguration().get(InvertedIndexSetting.CONF_QUERY_KEY,"");
+		if (context.getConfiguration().getBoolean(InvertedIndexSetting.IGNORE_LETTER_CASE,false)){
+			searchingQuery +=" (Ignore letter case)";
+		}
+		outputValue.set(searchingQuery);
+		context.write(NullWritable.get(), outputValue);
 	}
 
 	@Override

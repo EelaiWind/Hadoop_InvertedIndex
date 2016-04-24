@@ -16,6 +16,10 @@ public class FileIdRecorder{
 		this.conf = conf;
 	}
 	public void writeFileIDs(String filesDirectory) throws IOException{
+		writeFileIDs(new Path(filesDirectory));
+	}
+
+	public void writeFileIDs(Path filesDirectory) throws IOException{
 		FileSystem fileSystem = FileSystem.get(conf);
 
 		BufferedWriter writer = new BufferedWriter(
@@ -23,7 +27,7 @@ public class FileIdRecorder{
 				fileSystem.create( new Path(InvertedIndexSetting.ID_FILE_PATH), true ) ,"UTF-8" )
 		);
 		int id = 1;
-		for (FileStatus status : fileSystem.listStatus(new Path(filesDirectory))) {
+		for (FileStatus status : fileSystem.listStatus(filesDirectory)) {
 			writer.write(id+" "+ status.getPath().getName()+"\n");
 			id += 1;
 		}
