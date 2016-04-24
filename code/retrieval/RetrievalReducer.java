@@ -28,6 +28,7 @@ public class RetrievalReducer extends Reducer<ScoreFileIdPair, QueryAnswer, Null
 		previousScore = Double.MAX_VALUE;
 	}
 
+	@Override
 	public void run(Context context) throws IOException, InterruptedException {
 		setup(context);
 		try {
@@ -50,7 +51,7 @@ public class RetrievalReducer extends Reducer<ScoreFileIdPair, QueryAnswer, Null
 			if ( printedCount < topN ){
 				if ( queryAnswer.getScore() < previousScore ){
 					previousScore = queryAnswer.getScore();
-					rank += 1;
+					rank = printedCount + 1;
 				}
 				outputValue.set(getPrintableAnswer(context, queryAnswer));
 				context.write(NullWritable.get(), outputValue);
